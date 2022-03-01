@@ -1,11 +1,32 @@
+# sveltekit-rust-wasm
+
+Example showcasing a new SvelteKit project using Svelte + TypeScript + Tailwind CSS + Rust + WebAssembly.
+
+Check out a Vue 3 example [here](https://github.com/nunogois/vite-vue-rust-wasm).
+
+## Quick Start
+
+### Prerequisites
+
+1. First of all, [rustup](https://rustup.rs/) if you haven't already;
+2. Update with `rustup update`;
+3. Install [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) if you haven't already;
+4. Globally install [cargo-watch](https://crates.io/crates/cargo-watch) with `cargo install cargo-watch` or `cargo binstall cargo-watch`;
+
+### Project
+
+1. Setup the project (install dependencies and build wasm): `yarn setup`;
+2. Run the project: `yarn dev`;
+3. Build the project for release: `yarn build`;
+
 ## Dev Log
 
-1. Created SvelteKit project with `npm init svelte@next my-app`;
+1. Created SvelteKit project with `npm init svelte@next sveltekit-rust-wasm`;
 2. Added Tailwind CSS as per [these instructions](https://tailwindcss.com/docs/guides/sveltekit);
 3. Created `wasm` package with `wasm-pack new wasm`;
-4. Installed [vite-plugin-wasm-pack](https://github.com/nshen/vite-plugin-wasm-pack) and added `wasm` package in `svelte.config.js`;
+4. Installed [vite-plugin-wasm-pack](https://github.com/nshen/vite-plugin-wasm-pack) with `yarn add -D vite-plugin-wasm-pack` and added `wasm` package in `svelte.config.js`;
 5. Added relevant scripts to `package.json`;
-6. Added Svelte component `hello_wasm.svelte` with Wasm example;
+6. Added Svelte component `HelloWasm.svelte` with WebAssembly example;
 
 # create-svelte
 
