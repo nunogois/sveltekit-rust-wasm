@@ -4,6 +4,8 @@ Example showcasing a new SvelteKit project using Svelte + TypeScript + Tailwind 
 
 Check out a Vue 3 example [here](https://github.com/nunogois/vite-vue-rust-wasm).
 
+Want to check out a basic CRUD example where we make our requests using Rust? Check out this branch: [example-crud-actix](https://github.com/nunogois/sveltekit-rust-wasm/tree/example-crud-actix).
+
 ## Quick Start
 
 ### Prerequisites
