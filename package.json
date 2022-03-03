@@ -4,9 +4,10 @@
   "scripts": {
     "setup": "yarn && yarn build:wasm",
     "dev": "yarn watch:wasm & svelte-kit dev",
-    "build": "yarn build:wasm && svelte-kit build",
-    "build:wasm": "wasm-pack build ./wasm --target web --release",
-    "watch:wasm": "cd wasm && cargo watch -i .gitignore -i \"pkg/*\" -i \"target/*\" -s \"wasm-pack build --target web --dev\"",
+    "build": "yarn build:wasm:release && svelte-kit build",
+    "build:wasm": "wasm-pack build ./wasm --target web --dev",
+    "build:wasm:release": "wasm-pack build ./wasm --target web --release",
+    "watch:wasm": "yarn build:wasm && cd wasm && cargo watch -w \"src\" -s \"wasm-pack build --target web --dev\"",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "test": "playwright test",
