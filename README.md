@@ -8,7 +8,7 @@ Check out a Vue 3 example [here](https://github.com/nunogois/vite-vue-rust-wasm)
 
 This branch showcases an example of a typical CRUD application with Wasm. Svelte interacts with our `wasm` module, which then makes requests in Rust to our backend.
 
-Uses my other repo (rust-actix)[https://github.com/nunogois/rust-actix], so make sure you have that running locally.
+Uses my other repo [rust-actix](https://github.com/nunogois/rust-actix), so make sure you have that running locally.
 
 I would say it's totally overkill to use Wasm on something like this in production, but still, it's an example.
 
