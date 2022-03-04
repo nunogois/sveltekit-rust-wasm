@@ -3,6 +3,7 @@ mod utils;
 use wasm_bindgen::prelude::*;
 
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -38,36 +39,42 @@ pub async fn joke() -> Result<JsValue, JsValue> {
     Ok(JsValue::from_serde(&joke).unwrap())
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(getter_with_clone)]
 #[derive(Serialize, Deserialize)]
 pub struct User {
-    name: String,
-    email: String,
+    pub id: String,
+    pub name: String,
+    pub email: String,
 }
 
 #[wasm_bindgen]
 impl User {
     #[wasm_bindgen(constructor)]
     pub fn new(name: String, email: String) -> User {
-        User { name, email }
+        User {
+            id: Uuid::new_v4().to_string(),
+            name,
+            email,
+        }
     }
 }
 
 #[wasm_bindgen]
-pub async fn get_users() -> Result<JsValue, JsValue> {
+pub async fn users_load() -> Result<JsValue, JsError> {
     let url = "http://localhost:8080/users";
-    let users = reqwest::get(url)
-        .await
-        .unwrap()
-        .json::<Vec<User>>()
-        .await
-        .unwrap();
-    Ok(JsValue::from_serde(&users).unwrap())
+    match reqwest::get(url).await {
+        Ok(response) => {
+            let users: Vec<User> = response.json::<Vec<User>>().await.unwrap();
+            Ok(JsValue::from_serde(&users).unwrap())
+        }
+        Err(_e) => Err(JsError::new(
+            "Something went wrong trying to load the users. Make sure rust-actix is running.",
+        )),
+    }
 }
 
 #[wasm_bindgen]
-pub async fn post_user(user: User) -> Result<JsValue, JsValue> {
-    println!("post_user");
+pub async fn users_new(user: User) -> Result<JsValue, JsValue> {
     let url = "http://localhost:8080/users";
     let client = reqwest::Client::new();
     let new_user = client
@@ -80,4 +87,36 @@ pub async fn post_user(user: User) -> Result<JsValue, JsValue> {
         .await
         .unwrap();
     Ok(JsValue::from_serde(&new_user).unwrap())
+}
+
+#[wasm_bindgen]
+pub async fn users_update(id: String, mut user: User) -> Result<JsValue, JsValue> {
+    let url = format!("http://localhost:8080/users/{}", id);
+    let client = reqwest::Client::new();
+    user.id = id;
+    let new_user = client
+        .put(url)
+        .json(&user)
+        .send()
+        .await
+        .unwrap()
+        .json::<User>()
+        .await
+        .unwrap();
+    Ok(JsValue::from_serde(&new_user).unwrap())
+}
+
+#[wasm_bindgen]
+pub async fn users_delete(id: String) -> Result<String, JsValue> {
+    let url = format!("http://localhost:8080/users/{}", id);
+    let client = reqwest::Client::new();
+    let res = client
+        .delete(url)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    Ok(res)
 }
